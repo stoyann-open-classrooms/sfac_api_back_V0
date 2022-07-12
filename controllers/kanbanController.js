@@ -15,6 +15,7 @@ const addKanban = async (req, res) => {
   let data = {
     uid_nfc: req.body.uid_nfc,
     produitId: req.body.produitId,
+    quantite: req.body.quantite,
   };
 
   const kanban = await Kanban.create(data);

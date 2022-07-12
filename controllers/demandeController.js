@@ -91,6 +91,7 @@ const getDemandeRecue = async (req, res) => {
   let recue = await Demande.findAll({
     where: { status: "Reçue" },
     include: [{ model: Kanban, include: [Produit] }],
+    
   })
     .then((recue) =>
       res.json({

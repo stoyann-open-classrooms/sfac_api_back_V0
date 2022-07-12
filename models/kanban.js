@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
+    quantite: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
 
     uid_nfc: {
       type: DataTypes.STRING,
