@@ -5,13 +5,13 @@
 ## Comment lancer l'API en local:
 
 ### Cloner le projet:
-
-https://github.com/stoyann-open-classrooms/sfac_dashboard_back.git
+git clone 
+https://github.com/stoyann-open-classrooms/sfac_api_back_V0.git
 
 ### Acceder au repertoire du projet :
 
 ```
-cd sfac_app_back
+cd sfac_dashboard_back-main_v_0_0_1
 ```
 
 ### Installer les dépendances du projet :
