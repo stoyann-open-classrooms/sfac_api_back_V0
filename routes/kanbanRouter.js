@@ -13,6 +13,7 @@ router.get("/allKanbans", kanbanController.getAllKanbans);
 router.get("/:id", kanbanController.getOneKanban);
 
 
+
 router.delete("/:id", kanbanController.deleteKanban);
 
 module.exports = router;

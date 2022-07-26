@@ -15,6 +15,9 @@ app.use("/Images", express.static("./Images"));
 // demande
 const demandeRouter = require("./routes/demandeRouter");
 app.use(`${process.env.BASE_URL}/demande`, demandeRouter);
+// commande
+const commandeRouter = require("./routes/commandeRouter");
+app.use(`${process.env.BASE_URL}/commande`, commandeRouter);
 // kanban
 const kanbanRouter = require("./routes/kanbanRouter");
 app.use(`${process.env.BASE_URL}/kanban`, kanbanRouter);

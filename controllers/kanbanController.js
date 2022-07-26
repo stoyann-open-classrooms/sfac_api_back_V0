@@ -4,8 +4,7 @@ const kanban = require("../models/kanban");
 
 // models
 const Kanban = db.kanbans;
-const Demande = db.demandes;
-const Produit = db.produits;
+
 
 // =========================== Ajouter un kanban ========================================
 
@@ -25,7 +24,7 @@ const addKanban = async (req, res) => {
 
 const getAllKanbans = async (req, res) => {
   let kanbans = await Kanban.findAll({
-    include: [{ model: Demande, as: "demandes" }, { model: Produit }],
+    include: { all: true, nested: true },
    order: ['uid_nfc']
   
   })
@@ -54,7 +53,8 @@ const getOneKanban = async (req, res) => {
   //Récuperation de l'uttilisateur
   Kanban.findOne({
     where: { id: kanbanId },
-    include: [{ model: Demande, as: "demandes" }, { model: Produit }],
+    include: { all: true, nested: true },
+    
   })
     .then((kanban) => {
       if (kanban === null) {
@@ -71,6 +71,7 @@ const getOneKanban = async (req, res) => {
       })
     );
 };
+
 
 
 

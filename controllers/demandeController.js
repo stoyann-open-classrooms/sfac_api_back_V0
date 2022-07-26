@@ -1,9 +1,9 @@
 const db = require("../models");
+const demande = require("../models/demande");
 
 // Imports des models
 const Demande = db.demandes;
-const Kanban = db.kanbans;
-const Produit = db.produits;
+
 
 // =========================== Ajouter une demande ========================================
 const addDemande = async (req, res) => {
@@ -11,6 +11,7 @@ const addDemande = async (req, res) => {
 
   let data = {
     kanbanId: req.body.kanbanId,
+    createdAt: req.body.createdAt
   };
 
   const demande = await Demande.create(data);
@@ -25,10 +26,10 @@ const getOneDemande = async (req, res) => {
   if (!demandeId) {
     return res.json(400).json({ message: " ⛔️ Missing parameter" });
   }
-  //Récuperation de l'uttilisateur
+
   Demande.findOne({
     where: { id: demandeId },
-    include: [{ model: Kanban, include: [Produit] }],
+    include: { all: true, nested: true },
   })
     .then((demande) => {
       if (demande === null) {
@@ -68,15 +69,15 @@ const deleteDemande = async (req, res) => {
 
 // =================== Recupere la liste des demandes a traiter ========================================
 
-const getDemandeAtraiter = async (req, res) => {
+const getDemandesAtraiter = async (req, res) => {
   let aTraiter = await Demande.findAll({
     where: { status: "A traiter" },
 
-    include: [{ model: Kanban, include: [Produit] }],
+    include: { all: true, nested: true },
   })
     .then((aTraiter) =>
       res.json({
-        message: `✅ ${aTraiter.length}  demande(s) à traiter`,
+        message: `✅ ${aTraiter.length}  demande(s) à traiter trouvé`,
         data: aTraiter,
       })
     )
@@ -87,16 +88,16 @@ const getDemandeAtraiter = async (req, res) => {
 
 // =================== Recupere la liste des commandes recue (archivé) ========================================
 
-const getDemandeRecue = async (req, res) => {
-  let recue = await Demande.findAll({
-    where: { status: "Reçue" },
-    include: [{ model: Kanban, include: [Produit] }],
+const getDemandesArchive = async (req, res) => {
+  let archive = await Demande.findAll({
+    where: { status: "Archivé" },
+    include: { all: true, nested: true },
     
   })
-    .then((recue) =>
+    .then((archive) =>
       res.json({
-        message: `✅ ${recue.length}  commandes archiver`,
-        data: recue,
+        message: `✅ ${archive.length}  demande(s) archivée`,
+        data: archive,
       })
     )
     .catch((err) =>
@@ -104,32 +105,15 @@ const getDemandeRecue = async (req, res) => {
     );
 };
 
-// =========================== Recupere la liste des demandes en cour de livraison ========================================
-const getDemandesEnCours = async (req, res) => {
-  let enCours = await Demande.findAll({
-    where: { status: "En cours" },
-    include: [{ model: Kanban, include: [Produit] }],
-  })
-    .then((enCours) =>
-      res.json({
-        message: `✅ ${enCours.length} demandes en cours de livraison`,
-        data: enCours,
-      })
-    )
-    .catch((err) =>
-      res.status(500).json({ message: `⛔️ Database Error`, error: err })
-    );
-};
+
 
 // =========================== EXPORTS========================================
 
 module.exports = {
   addDemande,
-
-  getDemandeAtraiter,
-  getDemandeRecue,
-  getDemandesEnCours,
-  updateDemande,
+  getDemandesAtraiter,
+  getDemandesArchive,
   getOneDemande,
+  updateDemande,
   deleteDemande,
 };

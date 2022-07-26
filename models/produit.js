@@ -18,6 +18,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    stock: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: "0",
+
+      
+    },
   });
 
   return Produit;

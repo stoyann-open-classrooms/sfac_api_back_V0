@@ -2,7 +2,7 @@ const db = require("../models");
 
 // models
 const Produit = db.produits;
-const Kanban = db.kanbans;
+
 
 // image Upload dependence
 const multer = require("multer");
@@ -16,6 +16,7 @@ const addProduit = async (req, res) => {
     image: req.file.path,
     refference: req.body.refference,
     designation: req.body.designation,
+    stock: req.body.stock,
   };
 
   const produit = await Produit.create(data);
@@ -26,7 +27,8 @@ const addProduit = async (req, res) => {
 
 const getAllProduits = async (req, res) => {
   let produits = await Produit.findAll({
-    order: ['designation']
+    order: ['designation'],
+    include: { all: true, nested: true },
   })
     .then((produits) =>
       res.json({
@@ -45,6 +47,7 @@ const getOneProduit = async (req, res) => {
   let id = req.params.id;
   let produit = await Produit.findOne({
     where: { id: id },
+    include: { all: true, nested: true },
   });
   res.status(200).send(produit);
 };

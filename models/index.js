@@ -31,6 +31,7 @@ db.sequelize = sequelize;
 ///====================== synchronisation des models
 
 db.demandes = require("./demande")(sequelize, DataTypes);
+db.commandes = require("./commande")(sequelize, DataTypes);
 
 db.kanbans = require("./kanban")(sequelize, DataTypes);
 db.produits = require("./produit")(sequelize, DataTypes);
@@ -43,12 +44,17 @@ db.sequelize.sync({ force: false }).then(() => {
 
 // 1 to many relation between produits et kanbans
 
-db.produits.hasMany(db.kanbans);
+db.produits.hasOne(db.kanbans);
 db.kanbans.belongsTo(db.produits);
 
 // 1 to many relation between kanbans et demandes
 
 db.kanbans.hasMany(db.demandes);
 db.demandes.belongsTo(db.kanbans);
+
+// db.kanbans.hasMany(db.commandes);
+// db.commandes.belongsTo(db.kanbans);
+db.produits.hasMany(db.commandes);
+db.commandes.belongsTo(db.produits);
 
 module.exports = db;
